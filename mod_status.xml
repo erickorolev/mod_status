@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.0.0" client="site" method="upgrade">
+    <name>Статус ученика</name>
+    <author>Эрик Королев</author>
+    <version>1.0.0</version>
+    <description>Модуль, который отображает свойства ученика.</description>
+    <files>
+        <filename>mod_status.xml</filename>
+        <filename module="mod_status">mod_status.php</filename>
+        <filename>index.html</filename>
+		<filename>helper.php</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
+    </files>
+    <config>
+    </config>
+</extension>
