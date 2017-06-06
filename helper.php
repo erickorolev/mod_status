@@ -14,16 +14,6 @@
 		return $practice;
 	}
 	
-	// Метод, который высчитывает возраст пользователя из вводимой при регистрации даты рождения пользователя.
-	// http://stackoverflow.com/questions/3776682/php-calculate-age
-	
-	public static function showAge($date_of_birth) {
-		
-		$age = date_diff(date_create($date_of_birth), date_create('now'))->y;
-		echo $age;
-		
-	}
-	
 		
 	// Метод отображает количество жизней пользователя (от 3 до 0) в виде картинок (1 сердце = 1 жизнь).
 	

@@ -8,9 +8,8 @@
 echo "<p>Имя: {$user->name}</p>";
 echo "<p>Страна: {$user->country}</p>";
 echo "<p>Город: {$user->city}</p>";
+echo "<p>Возраст: {$user->age}</p>";
 ?>
-
-<p> Возраст: <?php ModStatusHelper::showAge($user->date_of_birth); ?> <p/>
 
 <?php echo "<p>Пожертвования: {$user->donat}</p>"; ?>
 
