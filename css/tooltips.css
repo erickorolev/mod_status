@@ -1,0 +1,21 @@
+[data-tooltip]{
+    position:relative;
+    border-bottom:1px dotted black;
+}
+[data-tooltip]:before{
+    content:attr(data-tooltip);
+    position:absolute;
+    bottom:110%;
+    padding:10px;
+    background:#666;
+    opacity:0;
+    color:white;
+    font-size:smaller;
+    -webkit-transition:opacity 1s ease;
+    -o-transition:opacity 1s ease;
+    transition:opacity 1s ease;
+    pointer-events:none;
+}
+[data-tooltip]:hover:before{
+    opacity:1;
+}
