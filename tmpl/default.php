@@ -1,14 +1,27 @@
 <?php
 
-//Шаблон модуля "Статус ученика".
+/**
+ * Шаблон модуля "Статус ученика".
+ * имя,
+ * страна,
+ * город,
+ * возраст,
+ * учебный день,
+ * жизни,
+ * опыт,
+ * осталось дней,
+ * пожертвования
+ * место в рейтинге,
+ * опыт,
+ * место в рейтинге,
+ * звание.
+ */
 
 defined('_JEXEC') or die; ?>
 
 <?php
-// Подключение javascript для обнуления дней без порно после нажатия кнопки.
+// Подключение css стиля модуля для подсказок
 $document = JFactory::getDocument();
-$document->addScript('/modules/mod_status/js/relapse.js');
-// Подключение css стиля модуля
 $document->addStyleSheet('/modules/mod_status/css/tooltips.css');
 ?>
 
@@ -19,26 +32,17 @@ echo "<p>Город: {$user->city}</p>";
 echo "<p>Возраст: {$user->age}</p>";
 ?>
 
-
-
 <p> Учебный день:
     <?php echo ModStatusHelper::countDates($user->schoolDate); ?>
 <p/>
 
-<!--
-Для блока необходимо сделать поле, в которое пользователь вводит дату, когда смотрел порно последний раз.
-Также необходимо сделать кнопку Х, нажимая на которою счетчик количества дней обнуляется, так как дату устанавливается на сегодняшний день.
-<p>
-
-    <span data-tooltip="Отображается количество дней, прошедших с начала этапа Отказ от порно. В случае рецидива, вам следует обнулить счетчик, нажав на крестик.">Дней без порно:</span>
-
-    <?php // echo ModStatusHelper::countDates($user->nofapDate); ?> <input id="relapse" type="button" value="X">
-<p/>
--->
-
 <p>
     <span data-tooltip="Ученик лишается жизни за невыполнение задания в течение месяца">Жизни:</span>
-    <?php ModStatusHelper::showLives($user->lives); ?>
+    <?php
+        for ($i = 0; $i < $user->lives; $i ++) {
+            echo '<img src="/images/systema/live.png"/>';
+        }
+    ?>
 <p/>
 
 <p> Осталось дней: <?php echo ModStatusHelper::daysLeft($user->stageDate); ?> <p/>
@@ -54,4 +58,4 @@ echo "<p>Возраст: {$user->age}</p>";
 
 <p> Место в рейтинге: <?php ModStatusHelper::findUser(ModStatusHelper::getRating(), $user->username); ?> <p/>
 
-<p> Звание: <?php ModStatusHelper::showRank(ModStatusHelper::countPractice($user->num_contacts, $user->num_dates, $user->num_closenesses)); ?> <p/>
+<p> Звание: <?php echo ModStatusHelper::countRank(ModStatusHelper::countPractice($user->num_contacts, $user->num_dates, $user->num_closenesses)); ?> <p/>

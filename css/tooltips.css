@@ -1,3 +1,4 @@
+/* Стиль подсказок для модуля "Статус ученика"*/
 [data-tooltip]{
     position:relative;
     border-bottom:1px dotted black;
