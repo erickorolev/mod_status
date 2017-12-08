@@ -57,8 +57,8 @@ class ModStatusHelper
     /* Метод назначает пользователю звание на основе количеста полученного пользователем опыта.
      * Из-за того, что рост опыта не является константой, более оптимальное решение придумать не удалось.
      * Необходимо перенести в базу данных.
-     * $practice integer Количество опыта ученика
-     * $rank string Название звания ученика
+     * @param $practice integer Количество опыта ученика
+     * @return $rank string Название звания ученика
      */
     public static function countRank($practice) {
 
@@ -130,11 +130,12 @@ class ModStatusHelper
     }
 
     /**
-     * Метод исполняет следующий запрос к базе данных:
-     * SELECT username, num_contacts + num_interests * 10 + num_dates * 100 + num_closenesses * 1000 AS Practice
-     * FROM aasgz_users
-     * ORDER BY Practice DESC;
-     * Этот же запрос используется для модуля "Рейтинг по количеству опыта". Отличие в том, что показываются пользователи с нулевым опытом.
+     * Запрос к базе данных на построение списка всех учеников с сортировокой по уровню их опыта.
+     * Опыт высчитывает сама база данных по формуле:
+     * количество подходов + количество свиданий * 10 + количество сближений * 100;
+     * Ученик - это зарегистрированный пользователь, который оплатил обучение,
+     * т.е. у которго количество пожертвований(donat) больше нуля.
+     * @return array
      */
     public static function getRating()
     {
@@ -144,6 +145,7 @@ class ModStatusHelper
 
         $query->select('username,(num_contacts + (num_dates * 10 ) + (num_closenesses * 100)) AS Practice');
         $query->from($db->quoteName('#__users'));
+        $query->where($db->quoteName('donat') . ' > '. $db->quote('0'));
         $query->order('Practice DESC');
 
         $db->setQuery($query);
@@ -155,11 +157,10 @@ class ModStatusHelper
     }
 
     /**
-     * Метод ссполняет следующий запрос к базе данных:
-     * SELECT username, donat FROM aasgz_users ORDER BY donat DESC;
-     * Этот же запрос используется для модуля "Рейтинг по сумме пожертвований".
-     * Отличие в том, что показываются также пользователи с нулевым пожертвованием
-     *                                                (вновь зарегистрировавшиеся).
+     * Запрос к базе данных на построение списка всех учеников с сортировокой по сумме пожертвований.
+     * Ученик - это зарегистрированный пользователь, который оплатил обучение,
+     * т.е. у которго количество пожертвований(donat) больше нуля.
+     * @return array
      */
     public static function getTop()
     {
@@ -169,6 +170,7 @@ class ModStatusHelper
 
         $query->select($db->quoteName(array('username', 'donat')));
         $query->from($db->quoteName('#__users'));
+        $query->where($db->quoteName('donat') . ' > '. $db->quote('0'));
         $query->order('donat DESC');
 
         $db->setQuery($query);
@@ -182,16 +184,20 @@ class ModStatusHelper
      * Метод ищет имя пользователя в массиве результата запроса к базе данных
      *                               и выдает позицию пользователя в рейтинге
      * Используется в двух случаях:
-     * при составлении рейтинга по сумме пожертвований и рейтинга по количеству опыта.
+     * - при поиске позиции ученика в рейтинге по опыту
+     * - при поиске позиции ученика в топе по сумме пожертвований
+     * @param $result array Массив с рейтингом
+     * @param $username string Имя пользователя
+     *
      */
-    public static function findUser($result, $user)
+    public static function findUser($result, $username)
     {
 
         $position = 1;
 
         foreach ($result as $row) {
-            if ($user == $row['0']) {
-                echo $position;
+            if ($username == $row['0']) {
+                return $position;
                 break;
             }
             else {

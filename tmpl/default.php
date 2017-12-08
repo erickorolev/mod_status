@@ -49,13 +49,17 @@ echo "<p>Возраст: {$user->age}</p>";
 
 <?php echo "<p>Пожертвования: {$user->donat}</p>"; ?>
 
-<p> Место в рейтинге: <?php ModStatusHelper::findUser(ModStatusHelper::getTop(), $user->username); ?> <p/>
+<p> Место в рейтинге: <?php echo ModStatusHelper::findUser(ModStatusHelper::getTop(), $user->username); ?> <p/>
 
 <p>
     <span data-tooltip="+ 1 за подход, + 10 за свидание, + 100 за секс. Опыт подтверждается аудиозаписью">Опыт:</span>
     <?php echo ModStatusHelper::countPractice($user->num_contacts, $user->num_dates, $user->num_closenesses); ?>
 <p/>
 
-<p> Место в рейтинге: <?php ModStatusHelper::findUser(ModStatusHelper::getRating(), $user->username); ?> <p/>
+<p> Место в рейтинге: <?php echo ModStatusHelper::findUser(ModStatusHelper::getRating(), $user->username); ?> <p/>
 
-<p> Звание: <?php echo ModStatusHelper::countRank(ModStatusHelper::countPractice($user->num_contacts, $user->num_dates, $user->num_closenesses)); ?> <p/>
+<p> Звание:
+    <?php
+    echo ModStatusHelper::countRank(ModStatusHelper::countPractice($user->num_contacts, $user->num_dates, $user->num_closenesses));
+    ?>
+<p/>
